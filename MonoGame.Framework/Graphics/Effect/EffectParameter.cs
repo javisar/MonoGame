@@ -1199,6 +1199,17 @@ namespace Microsoft.Xna.Framework.Graphics
             StateKey = unchecked(NextStateKey++);
         }
 
+        public void SetValueInt32Array(int[] value)
+        {
+            if (ParameterClass != EffectParameterClass.Vector || ParameterType != EffectParameterType.Int32)
+                throw new InvalidCastException();
+
+            var fData = (int[])Data;
+            for (int i=0; i<value.Length; i++)
+                fData[i] = value[i];
+            StateKey = unchecked(NextStateKey++);
+        }
+
         public void SetValue (Vector3[] value)
         {
             for (var i = 0; i < value.Length; i++)
