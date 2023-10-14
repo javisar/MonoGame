@@ -125,7 +125,7 @@ namespace Microsoft.Xna.Framework.Graphics
 				return graphicsDevice;
 			}
 
-            internal set
+            set
             {
                 Debug.Assert(value != null);
 

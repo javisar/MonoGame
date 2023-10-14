@@ -208,7 +208,7 @@ namespace Microsoft.Xna.Framework.Graphics
         private int _maxVertexBufferSlots;
 
         internal const int MaxResourceSlotsPerStage = 16;
-        internal const int MaxUavSlotsPerStage = 8;
+        internal const int MaxUavSlotsPerStage = 16;
         internal const int UavRegisterShiftMGFXC = 128; // this number is used in MGFXC to shift u-register bindings (see ShaderData.conductor.cs)
         public bool IsDisposed
         {
