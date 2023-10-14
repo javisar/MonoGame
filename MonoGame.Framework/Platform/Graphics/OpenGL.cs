@@ -1461,6 +1461,18 @@ namespace MonoGame.OpenGL
         [System.Security.SuppressUnmanagedCodeSecurity()]
         [UnmanagedFunctionPointer(callingConvention)]
         [MonoNativeFunctionWrapper]
+        internal delegate IntPtr FenceSyncDelegate(int command, int value);
+        internal static FenceSyncDelegate FenceSync;
+
+        [System.Security.SuppressUnmanagedCodeSecurity()]
+        [UnmanagedFunctionPointer(callingConvention)]
+        [MonoNativeFunctionWrapper]
+        internal delegate IntPtr ClientWaitSyncDelegate(IntPtr fence, int command, uint max);
+        internal static ClientWaitSyncDelegate ClientWaitSync;
+
+        [System.Security.SuppressUnmanagedCodeSecurity()]
+        [UnmanagedFunctionPointer(callingConvention)]
+        [MonoNativeFunctionWrapper]
         internal delegate void MemoryBarrierDelegate(MemoryBarrierBits barriers);
         internal static MemoryBarrierDelegate MemoryBarrier;
 
@@ -1636,6 +1648,8 @@ namespace MonoGame.OpenGL
             VertexAttribPointer = LoadFunction<VertexAttribPointerDelegate> ("glVertexAttribPointer");
 
             PatchParameteri = LoadFunction<PatchParameteriDelegate>("glPatchParameteri");
+            FenceSync = LoadFunction<FenceSyncDelegate>("glFenceSync");
+            ClientWaitSync = LoadFunction<ClientWaitSyncDelegate>("glClientWaitSync");
 
             // Instanced drawing requires GL 3.2 or up, if the either of the following entry points can not be loaded
             // this will get flagged by setting SupportsInstancing in GraphicsCapabilities to false.

@@ -4,6 +4,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using System.Threading;
 using MonoGame.OpenGL;
 
 namespace Microsoft.Xna.Framework.Graphics
@@ -78,6 +79,21 @@ namespace Microsoft.Xna.Framework.Graphics
             throw new NotSupportedException("Vertex buffers are write-only on OpenGL ES platforms");
 #else
             Threading.BlockOnUIThread(() => GetBufferData(offsetInBytes, data, startIndex, elementCount, vertexStride));
+#endif
+        }
+        internal void PlatformGetDataAsync<T>(int offsetInBytes, T[] data, int startIndex, int elementCount, int vertexStride)
+            where T : struct
+        {
+#if GLES
+            // Buffers are write-only on OpenGL ES 1.1 and 2.0.  See the GL_OES_mapbuffer extension for more information.
+            // http://www.khronos.org/registry/gles/extensions/OES/OES_mapbuffer.txt
+            throw new NotSupportedException("Vertex buffers are write-only on OpenGL ES platforms");
+#else
+            ThreadStart ts = delegate
+            {
+                GetBufferData(offsetInBytes, data, startIndex, elementCount, vertexStride);
+            };
+            new Thread(ts).Start(); 
 #endif
         }
 

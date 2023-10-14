@@ -13,6 +13,14 @@ namespace MonoGame.OpenGL
         private IntPtr _winHandle;
         private bool _disposed;
 
+        public IntPtr GetCurrent()
+        {
+            return _context; ;
+        }
+        public IntPtr GetWindowHandle()
+        {
+            return _winHandle; ;
+        }
         public int SwapInterval
         {
             get

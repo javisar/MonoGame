@@ -44,6 +44,8 @@ namespace Microsoft.Xna.Framework.Graphics
         {
         }
 
+        public int GetNativeTexturePtr() { return this.glTexture; }
+
         internal static int CalculateMipLevels(int width, int height = 0, int depth = 0)
         {
             int levels = 1;

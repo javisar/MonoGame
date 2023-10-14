@@ -18,6 +18,10 @@ namespace Microsoft.Xna.Framework.Graphics
     {
         public new int ElementCount { get { return base.ElementCount; } }
 
+        public new int ElementStride { get { return base.ElementStride; } }
+
+        public int GetNativeBufferPtr() { return base.buffer;  }
+
         public new StructuredBufferType StructuredBufferType { get { return base.StructuredBufferType;  } }
 
         public int CounterResetValue { get { return CounterBufferResetValue; } set { CounterBufferResetValue = value; } }
@@ -77,6 +81,32 @@ namespace Microsoft.Xna.Framework.Graphics
                 throw new InvalidOperationException("The array is not the correct size for the amount of data requested.");
 
             PlatformGetData<T>(offsetInBytes, data, startIndex, elementCount, structureStride);
+        }
+
+        public void GetDataAsync<T>(int offsetInBytes, T[] data, int startIndex, int elementCount, int structureStride = 0) where T : struct
+        {
+            var elementSizeInBytes = ReflectionHelpers.SizeOf<T>.Get();
+            if (structureStride == 0)
+                structureStride = elementSizeInBytes;
+
+            var vertexByteSize = ElementCount * ElementStride;
+            if (structureStride > vertexByteSize)
+                throw new ArgumentOutOfRangeException("structureStride", "Structure stride can not be larger than the buffer size.");
+
+            if (data == null)
+                throw new ArgumentNullException("data");
+            if (data.Length < (startIndex + elementCount))
+                throw new ArgumentOutOfRangeException("elementCount", "This parameter must be a valid index within the array.");
+            if (BufferUsage == BufferUsage.WriteOnly)
+                throw new NotSupportedException("Calling GetData on a resource that was created with BufferUsage.WriteOnly is not supported.");
+            if (elementCount > 1 && elementCount * structureStride > vertexByteSize)
+                throw new InvalidOperationException("The array is not the correct size for the amount of data requested.");
+
+            PlatformGetDataAsync<T>(offsetInBytes, data, startIndex, elementCount, structureStride);
+        }
+        public void GetDataAsync<T>(T[] data, int startIndex, int elementCount) where T : struct
+        {
+            this.GetDataAsync<T>(0, data, startIndex, elementCount, 0);
         }
 
         public void GetData<T>(T[] data, int startIndex, int elementCount) where T : struct

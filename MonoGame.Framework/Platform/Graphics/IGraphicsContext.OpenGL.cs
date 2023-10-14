@@ -13,5 +13,7 @@ namespace MonoGame.OpenGL
         void MakeCurrent(IWindowInfo info);
         void SwapBuffers();
         bool IsCurrent { get; }
+        IntPtr GetCurrent();
+        IntPtr GetWindowHandle();
     }
 }

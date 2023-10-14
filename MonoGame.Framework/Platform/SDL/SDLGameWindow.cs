@@ -107,14 +107,31 @@ namespace Microsoft.Xna.Framework
             Sdl.SetHint("SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS", "0");
             Sdl.SetHint("SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS", "1");
 
-            // when running NUnit tests entry assembly can be null
+            // when running NUnit tests entry assembly can b
+            // e null
             if (Assembly.GetEntryAssembly() != null)
             {
+                Stream stream;
+                try
+                {
+                    stream =
+                       Assembly.GetEntryAssembly().GetManifestResourceStream(Assembly.GetEntryAssembly().EntryPoint.DeclaringType.Namespace + ".Icon.bmp") ??
+                       Assembly.GetEntryAssembly().GetManifestResourceStream("Icon.bmp") ??
+                       Assembly.GetExecutingAssembly().GetManifestResourceStream("MonoGame.bmp");
+                }
+                catch (Exception ex) 
+                {
+                    stream = new MemoryStream(File.ReadAllBytes(@"Icon.bmp"));
+                }
+                /*
                 using (
+                    /*
                     var stream =
                         Assembly.GetEntryAssembly().GetManifestResourceStream(Assembly.GetEntryAssembly().EntryPoint.DeclaringType.Namespace + ".Icon.bmp") ??
                         Assembly.GetEntryAssembly().GetManifestResourceStream("Icon.bmp") ??
-                        Assembly.GetExecutingAssembly().GetManifestResourceStream("MonoGame.bmp"))
+                        Assembly.GetExecutingAssembly().GetManifestResourceStream("MonoGame.bmp")                    
+                        )
+                 */
                 {
                     if (stream != null)
                         using (var br = new BinaryReader(stream))

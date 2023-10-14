@@ -19,6 +19,14 @@ namespace Microsoft.Xna.Framework.Graphics
     {
 #if DESKTOPGL || ANGLE
         internal IGraphicsContext Context { get; private set; }
+        public IntPtr GetContext()
+        {
+            return Context.GetCurrent();
+        }
+        public IntPtr GetWindowHandle()
+        {
+            return Context.GetWindowHandle();
+        }
 #endif
 
 #if !GLES
